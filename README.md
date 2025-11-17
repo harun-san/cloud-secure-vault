@@ -1,143 +1,102 @@
-# README.md for Cloud Secure Document
+Berikut versi **README.md** yang lebih profesional dan ringkas, siap untuk GitHub, lengkap dengan badge, link Supabase, dan instruksi deployment:
 
-# 🔐 Cloud Secure Document
+# 🔐 Cloud Secure Vault
 
-[![License](https://img.shields.io/badge/license-Academic-blue)](LICENSE)
-[![Supabase](https://img.shields.io/badge/Supabase-Free%20Tier-green)](https://supabase.com/)
-[![Deployment](https://img.shields.io/badge/Deploy-Netlify-blue)](https://www.netlify.com/)
-[![Version](https://img.shields.io/badge/version-1.0.0-orange)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Supabase](https://img.shields.io/badge/Supabase-Backend-blue)](https://supabase.com/)
 
----
-
-## **Deskripsi Proyek**
-Cloud Secure Document adalah aplikasi web untuk **penyimpanan file aman berbasis cloud**, menggunakan **enkripsi AES end-to-end** dan **autentikasi pengguna Supabase**.  
-File yang diupload terenkripsi di browser, sehingga hanya pemilik kunci rahasia yang dapat mengunduh file dalam bentuk asli.  
-
-**Tujuan Proyek:**
-- Memahami arsitektur cloud dan implementasi layanan gratis (Supabase Free Tier).  
-- Menerapkan keamanan cloud: enkripsi, autentikasi, kontrol akses.  
-- Membuat sistem web sederhana yang bisa di-deploy gratis.  
+Cloud Secure Vault adalah aplikasi web untuk menyimpan file **aman di cloud** dengan enkripsi AES. Pengguna dapat mendaftar, login, upload file terenkripsi, dan mengunduh file dengan kunci rahasia pribadi mereka.
 
 ---
 
-## **Fitur Utama**
-- 🔑 **Login & Register** dengan email/password (Supabase Auth).  
-- 🔒 **Upload File Terenkripsi** AES di sisi klien.  
-- 📄 **Daftar File Anda** otomatis muncul setelah upload.  
-- ⬇️ **Download File Terdekripsi** dengan kunci rahasia.  
-- 🌐 **Deployment Gratis** di Netlify atau Vercel dengan HTTPS/SSL otomatis.  
-- 📊 **Logging Aktivitas** melalui Supabase Logs (login, upload, download).  
+## Fitur Utama
+
+- ✅ Registrasi & login dengan **email & password**.
+- ✅ Verifikasi email sebelum upload.
+- ✅ Enkripsi file dengan **AES**.
+- ✅ Penyimpanan file di **Supabase Storage**.
+- ✅ Daftar file yang sudah diupload + tombol download.
+- ✅ Dekripsi file saat download menggunakan **kunci rahasia**.
+- ✅ Responsif untuk desktop & mobile.
 
 ---
 
-## **Demo / Screenshot**
-| Login/Register | Upload File | Download File |
-|----------------|------------|---------------|
-| ![Login](./screenshots/login.png) | ![Upload](./screenshots/upload.png) | ![Download](./screenshots/download.png) |
+## Demo / Screenshot
 
-> Pastikan menambahkan folder `screenshots/` dan simpan gambar sesuai nama di atas.
+![Screenshot](screenshot.png)  
+*Contoh tampilan aplikasi.*
 
 ---
 
-## **Struktur Project**
-```
-cloud-secure-document/
-│
-├─ index.html      # Halaman utama
-├─ style.css       # Styling modern & responsive
-├─ app.js          # Logika upload, enkripsi, dekripsi, autentikasi
-├─ README.md       # Dokumentasi project
-└─ screenshots/    # Folder screenshot demo
-```
+## Teknologi
+
+- **Frontend:** HTML, CSS, JavaScript  
+- **Library:** 
+  - [Supabase JS](https://supabase.com/docs/reference/javascript/introduction) — autentikasi & storage  
+  - [CryptoJS](https://cryptojs.gitbook.io/docs/) — AES enkripsi/dekripsi  
+- **Backend:** Supabase (Auth + Storage)  
+- **Hosting:** Netlify / Vercel / localhost  
 
 ---
 
-## **Instalasi & Setup (Local Development)**
+## Cara Menjalankan
 
 1. Clone repository:
-```bash
-git clone https://github.com/username/cloud-secure-document.git
-cd cloud-secure-document
+   git clone <repository-url>
+   cd cloud-secure-vault
+   
+
+2. Buka `index.html` di browser atau jalankan server lokal:
+
+   npx http-server .
+
+
+3. Buat akun di [Supabase](https://supabase.com/) dan buat project baru.
+
+4. Buat **Storage Bucket** bernama: `secure-files`.
+
+5. Update `app.js` dengan URL & API Key Supabase:
+
+   const supabase = createClient("SUPABASE_URL", "SUPABASE_ANON_KEY");
+
+6. Akses aplikasi dan lakukan:
+
+   * Registrasi akun
+   * Login
+   * Upload file dengan kunci rahasia
+   * Download & masukkan kunci untuk dekripsi
+
+---
+
+## Struktur Folder
+
+```
+cloud-secure-vault/
+├─ index.html        # Halaman utama
+├─ style.css         # Styling
+├─ app.js            # Script frontend
+├─ README.md         # Dokumentasi
+└─ screenshot.png    # Contoh tampilan
 ```
 
-2. Buka `index.html` di browser.  
+---
 
-3. Buat akun di **Supabase Free Tier**: [https://supabase.com](https://supabase.com)  
+## Cara Kerja
 
-4. Buat **Storage bucket** bernama `secure-files`.  
-   - Atur akses per user (folder unik per user).  
-
-5. Ganti URL & anon key di `app.js`:
-```javascript
-const supabase = createClient(
-  "SUPABASE_URL",
-  "SUPABASE_ANON_KEY"
-);
-```
-
-6. Jalankan project di browser, login, dan coba upload file.  
+1. **Registrasi & Login:** Email diverifikasi sebelum upload.
+2. **Upload File:** File dienkripsi AES → diubah ke base64 → diupload ke Supabase Storage.
+3. **Download & Dekripsi:** Pengguna memasukkan kunci rahasia → file diunduh & didekripsi di browser.
 
 ---
 
-## **Deployment ke Cloud Gratis**
+## Keamanan
 
-### Netlify
-1. Buat akun Netlify gratis: [https://www.netlify.com](https://www.netlify.com)  
-2. Drag & drop folder project atau hubungkan repository GitHub.  
-3. Netlify otomatis memberi **HTTPS/SSL**.  
-
-### Vercel
-1. Buat akun Vercel gratis: [https://vercel.com](https://vercel.com)  
-2. Import project dari GitHub.  
-3. Tambahkan environment variable: `SUPABASE_URL` dan `SUPABASE_ANON_KEY`.  
+* Kunci enkripsi **tidak disimpan di server**.
+* Supabase menyimpan file dalam **format terenkripsi**.
+* Kehilangan kunci = file **tidak dapat didekripsi**.
 
 ---
 
-## **Cara Penggunaan**
+## Lisensi
 
-1. **Register/Login**
-   - Masukkan email & password
-2. **Upload File**
-   - Pilih file  
-   - Masukkan **kunci enkripsi**  
-   - Klik **Encrypt & Upload**  
-3. **Daftar File**
-   - Semua file user akan muncul otomatis  
-4. **Download File**
-   - Klik tombol **Download**  
-   - Masukkan kunci untuk mendapatkan file asli  
-
----
-
-## **Keamanan**
-- 🔒 **AES Encryption** di sisi klien  
-- 👤 **Autentikasi Supabase** → setiap user hanya bisa akses folder sendiri  
-- 📁 **Folder unik per user** → implementasi IAM sederhana  
-- 🔗 **Signed URL** opsional untuk private file  
-- 🌐 **HTTPS / SSL** dari hosting platform gratis  
-- 💾 **Backup & Logging**
-  - Backup manual / mirror bucket  
-  - Logging aktivitas login, upload, download  
-
----
-
-## **Risiko & Mitigasi**
-| Risiko | Dampak | Mitigasi |
-|--------|--------|----------|
-| Lupa kunci enkripsi | File tidak bisa diakses | Simpan catatan lokal atau backup kunci |
-| Bucket terekspos | File tetap terenkripsi | Signed URL + AES end-to-end |
-| Brute force login | Akun terancam | Rate limit / MFA opsional |
-| File besar lambat upload/download | User experience buruk | Chunking / progress bar |
-
----
-
-## **License**
-Academic / Learning Purpose.  
-Tidak diperuntukkan untuk penggunaan komersial.  
-
----
-
-## **Kontak**
-- **Pembuat:** Rina Wahyuni
-- **Email:** wahyunirina533@gmail.com
-- **GitHub:** []
+MIT License © 2025 Harun
