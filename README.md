@@ -1,5 +1,3 @@
-Berikut versi **README.md** yang lebih profesional dan ringkas, siap untuk GitHub, lengkap dengan badge, link Supabase, dan instruksi deployment:
-
 # 🔐 Cloud Secure Vault
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
