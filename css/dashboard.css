@@ -311,6 +311,132 @@
   cursor: pointer;
 }
 
+/* ===== SELECTED FILES SECTION ===== */
+.selected-files-section {
+  background: var(--dark-light);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: none;
+}
+
+.selected-files-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.selected-files-header h4 {
+  margin: 0;
+  color: white;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.selected-files-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.selected-file-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: var(--transition);
+}
+
+.selected-file-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.selected-file-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(67, 97, 238, 0.15);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  color: var(--primary);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.selected-file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.selected-file-name {
+  font-weight: 500;
+  color: white;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+}
+
+.selected-file-meta {
+  display: flex;
+  gap: 0.75rem;
+  color: var(--gray);
+  font-size: 0.8rem;
+}
+
+.remove-file-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius);
+  border: none;
+  background: rgba(239, 71, 111, 0.1);
+  color: var(--danger);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.remove-file-btn:hover {
+  background: var(--danger);
+  color: white;
+  transform: scale(1.05);
+}
+
+.selected-files-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.selected-files-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.selected-files-list::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.selected-files-list::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
 .key-section {
   background: var(--dark-light);
   border-radius: var(--radius-lg);
@@ -758,6 +884,28 @@
   
   .file-actions {
     justify-content: center;
+  }
+  
+  .selected-file-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .selected-file-icon {
+    align-self: center;
+  }
+  
+  .selected-file-info {
+    text-align: center;
+  }
+  
+  .selected-file-meta {
+    justify-content: center;
+  }
+  
+  .remove-file-btn {
+    align-self: center;
   }
   
   .modal-content {
