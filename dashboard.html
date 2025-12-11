@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Cloud Secure Vault</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/dashboard.js" defer></script>
+</head>
+<body class="dashboard">
+  <button class="mobile-menu-btn" id="mobile-menu-btn">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <i class="fas fa-shield-alt"></i>
+        <span>CloudSecureVault</span>
+      </a>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="nav-section">
+        <h4 class="nav-title">NAVIGASI UTAMA</h4>
+        <button class="nav-item active" id="nav-upload">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <span>Upload File</span>
+        </button>
+        <button class="nav-item" id="nav-files">
+          <i class="fas fa-folder"></i>
+          <span>File Saya</span>
+        </button>
+      </div>
+
+      <div class="nav-section">
+        <h4 class="nav-title">PENGATURAN</h4>
+        <button class="nav-item" id="nav-change-password">
+          <i class="fas fa-key"></i>
+          <span>Ubah Password</span>
+        </button>
+        <button class="nav-item" id="nav-delete-account">
+          <i class="fas fa-user-times"></i>
+          <span>Hapus Akun</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <div class="user-avatar" id="user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name" id="user-name">Loading...</div>
+          <div class="user-email" id="user-email">user@example.com</div>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-full mt-2" id="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Keluar
+      </button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="dashboard-header">
+      <div class="header-title">
+        <h1 id="page-title">Dashboard</h1>
+        <p>Selamat datang kembali! Kelola file terenkripsi Anda dengan aman.</p>
+      </div>
+      <div class="header-actions">
+        <div class="search-bar">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="search-input" class="search-input" placeholder="Cari file...">
+        </div>
+        <button class="btn btn-primary" id="quick-upload-btn">
+          <i class="fas fa-plus"></i> Upload Baru
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon">
+            <i class="fas fa-file"></i>
+          </div>
+        </div>
+        <div class="stat-value" id="total-files">0</div>
+        <div class="stat-label">Total File</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon">
+            <i class="fas fa-database"></i>
+          </div>
+        </div>
+        <div class="stat-value" id="total-size">0 MB</div>
+        <div class="stat-label">Penyimpanan Digunakan</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+        </div>
+        <div class="stat-value">AES-256</div>
+        <div class="stat-label">Enkripsi Aktif</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+        </div>
+        <div class="stat-value">100%</div>
+        <div class="stat-label">Keamanan Data</div>
+      </div>
+    </div>
+
+    <div class="upload-section" id="upload-section">
+      <div class="upload-icon">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </div>
+      <h2 class="upload-title">Upload File dengan Enkripsi</h2>
+      <p class="upload-description">
+        Pilih file dari perangkat Anda. File akan dienkripsi menggunakan AES-256 di perangkat 
+        sebelum dikirim ke server kami. Maksimum 100MB per file.
+      </p>
+      <div class="file-input-wrapper">
+        <input type="file" id="file-input" class="file-input" multiple>
+        <label for="file-input" class="btn btn-primary">
+          <i class="fas fa-folder-open"></i> Pilih File
+        </label>
+      </div>
+      <p class="text-gray mt-2">
+        <i class="fas fa-info-circle"></i>
+        Drag & drop file di sini atau klik untuk memilih
+      </p>
+    </div>
+
+    <div class="key-section">
+      <div class="key-header">
+        <i class="fas fa-key"></i>
+        <h3>Kunci Enkripsi</h3>
+      </div>
+      <p class="text-gray">
+        Masukkan kunci enkripsi unik Anda (minimal 8 karakter). Kunci ini tidak akan disimpan di server kami.
+      </p>
+      <div class="key-input-group mt-2">
+        <input type="password" id="encryption-key" class="form-input" placeholder="Kunci enkripsi rahasia">
+        <button class="btn btn-primary" id="encrypt-upload-btn">
+          <i class="fas fa-lock"></i>
+          <span id="upload-text">Enkripsi & Upload</span>
+        </button>
+      </div>
+      <div class="key-warning" id="key-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        Simpan kunci enkripsi Anda! Jika hilang, file tidak dapat dipulihkan.
+      </div>
+    </div>
+
+    <div class="file-section" id="file-list-section">
+      <div class="file-header">
+        <h3><i class="fas fa-folder"></i> File Saya</h3>
+        <div class="file-filters">
+          <button class="filter-btn active" data-filter="all">Semua</button>
+          <button class="filter-btn" data-filter="newest">Terbaru</button>
+          <button class="filter-btn" data-filter="largest">Terbesar</button>
+        </div>
+      </div>
+      <div class="file-items" id="file-items-container"></div>
+      <div class="file-header">
+        <div></div>
+        <button class="btn btn-secondary" id="refresh-files">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="change-password-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>
+          <i class="fas fa-key"></i>
+          Ubah Password
+        </h2>
+        <button class="close-modal" id="close-password-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="current-password" class="form-label">Password Saat Ini</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="current-password" class="form-input" placeholder="Masukkan password saat ini">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="new-password-modal" class="form-label">Password Baru</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="new-password-modal" class="form-input" placeholder="Password baru (minimal 6 karakter)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password-modal" class="form-label">Konfirmasi Password Baru</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="confirm-password-modal" class="form-input" placeholder="Ulangi password baru">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="close-password-modal-btn">Batal</button>
+        <button class="btn btn-primary" id="save-password-btn">
+          <i class="fas fa-save"></i>
+          <span id="save-password-text">Simpan Perubahan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="delete-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>
+          <i class="fas fa-trash-alt"></i>
+          Konfirmasi Penghapusan
+        </h2>
+        <button class="close-modal" id="close-delete-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Apakah Anda yakin ingin menghapus file berikut?</p>
+        <p class="text-gray"><strong id="file-to-delete-name"></strong></p>
+        <div class="alert alert-error mt-2">
+          <i class="fas fa-exclamation-triangle alert-icon"></i>
+          <span>File yang dihapus tidak dapat dipulihkan.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancel-delete">Batal</button>
+        <button class="btn btn-danger" id="confirm-delete">
+          <i class="fas fa-trash-alt"></i>
+          <span id="delete-text">Hapus Permanen</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="delete-account-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>
+          <i class="fas fa-user-times"></i>
+          Hapus Akun Permanent
+        </h2>
+        <button class="close-modal" id="close-delete-account-modal">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="progress-steps">
+          <div class="step active" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-text">Verifikasi</div>
+          </div>
+          <div class="step" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-text">Konfirmasi</div>
+          </div>
+          <div class="step" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-text">Proses</div>
+          </div>
+        </div>
+        
+        <div id="delete-step-1" class="delete-step active">
+          <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+              <strong>PERINGATAN KRITIS</strong>
+              <p>Anda akan menghapus akun Anda secara permanent!</p>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="delete-confirm-email" class="form-label">Email Anda</label>
+            <div class="input-group">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="delete-confirm-email" class="form-input" 
+                    placeholder="nama@email.com" required readonly>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="delete-confirm-password" class="form-label">
+              Password Saat Ini
+            </label>
+            <div class="input-group">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="delete-confirm-password" class="form-input" 
+                    placeholder="Masukkan password untuk verifikasi" required>
+            </div>
+          </div>
+          
+          <div class="checkbox-group">
+            <input type="checkbox" id="delete-understand" class="checkbox-input" required>
+            <label for="delete-understand" class="checkbox-label">
+              Saya memahami bahwa tindakan ini akan menghapus semua data saya secara permanent
+            </label>
+          </div>
+        </div>
+        
+        <div id="delete-step-2" class="delete-step hidden">
+          <div class="alert alert-danger">
+            <i class="fas fa-skull-crossbones"></i>
+            <div>
+              <strong>KONFIRMASI FINAL</strong>
+              <p>Ketik kata berikut untuk mengonfirmasi penghapusan:</p>
+              <div class="confirmation-word">HAPUS AKUN</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="final-confirmation" class="form-label">
+              Ketik "HAPUS AKUN" (huruf besar)
+            </label>
+            <div class="input-group">
+              <i class="fas fa-keyboard input-icon"></i>
+              <input type="text" id="final-confirmation" class="form-input" 
+                    placeholder='Ketik "HAPUS AKUN"' required>
+            </div>
+          </div>
+        </div>
+        
+        <div id="delete-step-3" class="delete-step hidden">
+          <div class="processing-container">
+            <div class="processing-icon">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <h3 class="processing-title">Menghapus Akun Anda...</h3>
+            <p class="processing-description">Ini mungkin memakan waktu beberapa menit.</p>
+            
+            <div class="progress-bar">
+              <div class="progress-fill" id="delete-progress-bar"></div>
+            </div>
+            
+            <div class="processing-steps">
+              <div class="processing-step" id="step-verifying">
+                <i class="fas fa-check-circle text-success"></i>
+                <span>Memverifikasi kredensial...</span>
+              </div>
+              <div class="processing-step" id="step-deleting-files">
+                <i class="fas fa-circle"></i>
+                <span>Menghapus file...</span>
+              </div>
+              <div class="processing-step" id="step-deleting-data">
+                <i class="fas fa-circle"></i>
+                <span>Menghapus data pengguna...</span>
+              </div>
+              <div class="processing-step" id="step-cleaning-up">
+                <i class="fas fa-circle"></i>
+                <span>Membersihkan sistem...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancel-delete-account">
+          <i class="fas fa-times"></i> Batalkan
+        </button>
+        <button class="btn btn-danger hidden" id="confirm-delete-account">
+          <i class="fas fa-trash-alt"></i>
+          <span id="delete-account-text">Hapus Akun Saya</span>
+        </button>
+        <button class="btn btn-primary hidden" id="next-step-btn">
+          <i class="fas fa-arrow-right"></i>
+          <span>Lanjut</span>
+        </button>
+        <button class="btn btn-danger hidden" id="final-delete-btn">
+          <i class="fas fa-bomb"></i>
+          <span>HAPUS PERMANEN</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

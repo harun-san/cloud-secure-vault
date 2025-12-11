@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masuk - Cloud Secure Vault</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.min.js"></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/auth.js" defer></script>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <a href="index.html" class="logo" style="justify-content: center; margin-bottom: 1rem;">
+          <i class="fas fa-shield-alt logo-icon"></i>
+          <span>CloudSecureVault</span>
+        </a>
+        <h1 class="auth-title">Masuk ke Akun</h1>
+        <p class="auth-subtitle">Masukkan kredensial Anda untuk mengakses dashboard</p>
+      </div>
+
+      <div id="alert-message" class="alert hidden"></div>
+
+      <div id="login-form">
+        <div class="form-group">
+          <label for="email" class="form-label">Alamat Email</label>
+          <div class="input-group">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="email" class="form-input" placeholder="nama@email.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="password" class="form-input" placeholder="Masukkan password" autocomplete="current-password" required>
+          </div>
+        </div>
+
+        <button id="login-btn" class="btn btn-primary btn-full">
+          <i class="fas fa-sign-in-alt"></i>
+          <span id="login-text">Masuk ke Dashboard</span>
+        </button>
+
+        <div class="separator">
+          <span>Atau</span>
+        </div>
+
+        <button id="forgot-password-btn" class="btn btn-secondary btn-full">
+          <i class="fas fa-key"></i>
+          Lupa Password?
+        </button>
+
+        <div class="auth-footer">
+          <p>Belum memiliki akun? <a href="register.html">Daftar di sini</a></p>
+          <p class="mt-2">
+            <a href="index.html" class="back-link">
+              <i class="fas fa-arrow-left"></i>
+              Kembali ke Beranda
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div id="forgot-password-form" class="hidden">
+        <div class="back-link" id="back-to-login">
+          <i class="fas fa-arrow-left"></i>
+          Kembali ke Login
+        </div>
+
+        <div class="auth-header">
+          <h1 class="auth-title">Reset Password</h1>
+          <p class="auth-subtitle">Masukkan email terdaftar untuk mereset password</p>
+        </div>
+
+        <div class="form-group">
+          <label for="reset-email" class="form-label">Email Terdaftar</label>
+          <div class="input-group">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="reset-email" class="form-input" placeholder="nama@email.com" required>
+          </div>
+        </div>
+
+        <button id="send-otp-btn" class="btn btn-primary btn-full">
+          <i class="fas fa-paper-plane"></i>
+          <span id="send-otp-text">Kirim Kode OTP</span>
+        </button>
+      </div>
+
+      <div id="otp-section" class="hidden">
+        <div class="back-link" id="back-to-reset">
+          <i class="fas fa-arrow-left"></i>
+          Kembali
+        </div>
+
+        <div class="auth-header">
+          <h1 class="auth-title">Verifikasi OTP</h1>
+          <p class="auth-subtitle">Kode OTP telah dikirim ke email Anda</p>
+        </div>
+
+        <div class="otp-container">
+          <div class="otp-inputs">
+            <input type="text" maxlength="1" class="otp-input" data-index="0" pattern="\d*" inputmode="numeric" required>
+            <input type="text" maxlength="1" class="otp-input" data-index="1" pattern="\d*" inputmode="numeric" required>
+            <input type="text" maxlength="1" class="otp-input" data-index="2" pattern="\d*" inputmode="numeric" required>
+            <input type="text" maxlength="1" class="otp-input" data-index="3" pattern="\d*" inputmode="numeric" required>
+            <input type="text" maxlength="1" class="otp-input" data-index="4" pattern="\d*" inputmode="numeric" required>
+            <input type="text" maxlength="1" class="otp-input" data-index="5" pattern="\d*" inputmode="numeric" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="new-password" class="form-label">Password Baru</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="new-password" class="form-input" placeholder="Password baru (minimal 6 karakter)" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password" class="form-label">Konfirmasi Password Baru</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="confirm-password" class="form-input" placeholder="Ulangi password baru" required>
+          </div>
+        </div>
+
+        <button id="verify-otp-btn" class="btn btn-primary btn-full">
+          <i class="fas fa-check-circle"></i>
+          <span id="verify-otp-text">Reset Password</span>
+        </button>
+
+        <div class="auth-footer">
+          <p>Tidak menerima OTP? <a href="#" id="resend-otp">Kirim ulang</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const emailInput = document.getElementById('email');
+      if (emailInput) {
+        setTimeout(() => emailInput.focus(), 100);
+      }
+    });
+  </script>
+</body>
+</html>

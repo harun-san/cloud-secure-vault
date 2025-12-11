@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar - Cloud Secure Vault</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/auth.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.min.js"></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/auth.js" defer></script>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <a href="index.html" class="logo" style="justify-content: center; margin-bottom: 1rem;">
+          <i class="fas fa-shield-alt logo-icon"></i>
+          <span>CloudSecureVault</span>
+        </a>
+        <h1 class="auth-title">Buat Akun Baru</h1>
+        <p class="auth-subtitle">Daftar sekarang dan dapatkan 1GB penyimpanan gratis</p>
+      </div>
+
+      <div id="alert-message" class="alert hidden"></div>
+
+      <div id="register-form">
+        <a href="index.html" class="back-link">
+          <i class="fas fa-arrow-left"></i>
+          Kembali ke Beranda
+        </a>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Alamat Email</label>
+          <div class="input-group">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="email" class="form-input" placeholder="nama@email.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="password" class="form-input" placeholder="Password minimal 6 karakter" autocomplete="new-password" required>
+          </div>
+          <div class="password-strength">
+            <div class="strength-text">Kekuatan password: <span id="strength-text">Lemah</span></div>
+            <div class="strength-meter">
+              <div class="strength-fill" id="strength-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password" class="form-label">Konfirmasi Password</label>
+          <div class="input-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="confirm-password" class="form-input" placeholder="Ulangi password" autocomplete="new-password" required>
+          </div>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="terms" class="checkbox-input" required>
+          <label for="terms" class="checkbox-label">
+            Saya menyetujui <a href="#" target="_blank">Syarat dan Ketentuan</a> serta 
+            <a href="#" target="_blank">Kebijakan Privasi</a> Cloud Secure Vault
+          </label>
+        </div>
+
+        <button id="register-btn" class="btn btn-primary btn-full">
+          <i class="fas fa-user-plus"></i>
+          <span id="register-text">Daftar Sekarang</span>
+        </button>
+
+        <div class="auth-footer">
+          <p>Sudah memiliki akun? <a href="login.html">Masuk di sini</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const emailInput = document.getElementById('email');
+      if (emailInput) {
+        setTimeout(() => emailInput.focus(), 100);
+      }
+    });
+  </script>
+</body>
+</html>

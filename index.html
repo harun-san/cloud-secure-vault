@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud Secure Vault - Penyimpanan File Terenkripsi End-to-End</title>
+  <meta name="description" content="Cloud Secure Vault adalah solusi penyimpanan file terenkripsi AES-256 dengan keamanan tingkat militer.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/mdi/shield-lock.svg">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <i class="fas fa-shield-alt logo-icon"></i>
+        <span>CloudSecureVault</span>
+      </a>
+      
+      <div class="nav-links">
+        <a href="#features">Fitur</a>
+        <a href="#how-it-works">Cara Kerja</a>
+        <a href="#security">Keamanan</a>
+        <a href="login.html" class="btn btn-primary btn-sm">Masuk</a>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Keamanan Data Anda Adalah Prioritas Kami</h1>
+        <p class="hero-subtitle">
+          Cloud Secure Vault menyediakan penyimpanan file terenkripsi end-to-end dengan standar keamanan AES-256. 
+          File Anda dienkripsi di perangkat sebelum diunggah ke cloud, memastikan hanya Anda yang memiliki akses.
+        </p>
+        
+        <div class="hero-buttons">
+          <a href="register.html" class="btn btn-primary btn-lg">
+            <i class="fas fa-rocket"></i> Mulai Gratis
+          </a>
+          <a href="#how-it-works" class="btn btn-secondary btn-lg">
+            <i class="fas fa-play-circle"></i> Pelajari Cara Kerja
+          </a>
+        </div>
+        
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">AES-256</span>
+            <span class="stat-label">Enkripsi Militer</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">99.9%</span>
+            <span class="stat-label">Uptime Garansi</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">0-KB</span>
+            <span class="stat-label">Zero-Knowledge</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="container">
+      <h2 class="section-title">Fitur Keamanan Unggulan</h2>
+      <p class="section-subtitle">
+        Dirancang dengan teknologi enkripsi terbaru untuk melindungi data sensitif Anda
+      </p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <h3 class="feature-title">Enkripsi End-to-End</h3>
+          <p class="feature-description">
+            File Anda dienkripsi di perangkat menggunakan AES-256 sebelum dikirim ke server kami.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-shield"></i>
+          </div>
+          <h3 class="feature-title">Zero-Knowledge Architecture</h3>
+          <p class="feature-description">
+            Kami tidak memiliki akses ke data Anda. Semua proses terjadi di sisi klien.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <h3 class="feature-title">Upload & Download Aman</h3>
+          <p class="feature-description">
+            Transfer file menggunakan koneksi TLS 1.3 dengan enkripsi tambahan.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-trash-alt"></i>
+          </div>
+          <h3 class="feature-title">Penghapusan Aman</h3>
+          <p class="feature-description">
+            File yang dihapus dihapus secara permanen dari semua server.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3 class="feature-title">Versioning File</h3>
+          <p class="feature-description">
+            Simpan hingga 10 versi sebelumnya dari setiap file.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="feature-title">Akses Multi-Device</h3>
+          <p class="feature-description">
+            Akses file Anda dari desktop, tablet, atau smartphone.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-dark" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">Bagaimana Cloud Secure Vault Bekerja</h2>
+      <p class="section-subtitle">
+        Proses 3 langkah sederhana untuk melindungi file Anda dengan enkripsi tingkat militer
+      </p>
+      
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3 class="step-title">Upload File Anda</h3>
+            <p class="step-description">
+              Pilih file dari perangkat Anda. Sistem kami akan mempersiapkan file untuk proses enkripsi.
+            </p>
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3 class="step-title">Enkripsi dengan Kunci Rahasia</h3>
+            <p class="step-description">
+              Masukkan kunci enkripsi unik Anda. File akan dienkripsi menggunakan algoritma AES-256.
+            </p>
+          </div>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3 class="step-title">Simpan & Akses dengan Aman</h3>
+            <p class="step-description">
+              File terenkripsi disimpan di server cloud kami. Untuk mengaksesnya, gunakan kunci enkripsi.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="security">
+    <div class="container">
+      <h2 class="section-title">Arsitektur Keamanan</h2>
+      <p class="section-subtitle">
+        Dibangun dengan prinsip keamanan berlapis untuk perlindungan maksimal
+      </p>
+      
+      <div class="testimonials">
+        <div class="testimonial-slider">
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "Cloud Secure Vault menggunakan enkripsi AES-256 yang sama dengan yang digunakan 
+              oleh institusi keuangan dan pemerintah."
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar">CS</div>
+              <div class="author-info">
+                <h4>Standar Keamanan</h4>
+                <p>NIST 800-57 & FIPS 140-2 Compliant</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "Dengan arsitektur zero-knowledge, kami tidak dapat mengakses data Anda."
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar">ZK</div>
+              <div class="author-info">
+                <h4>Privasi Terjamin</h4>
+                <p>Zero-Knowledge Architecture</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              "Semua data transit dilindungi dengan TLS 1.3 dan Perfect Forward Secrecy."
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar">TS</div>
+              <div class="author-info">
+                <h4>Transfer Aman</h4>
+                <p>TLS 1.3 dengan PFS</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta">
+        <h2 class="cta-title">Siap Melindungi Data Anda?</h2>
+        <p class="cta-description">
+          Bergabung dengan ribuan pengguna yang telah mempercayakan keamanan data mereka.
+        </p>
+        <div class="hero-buttons" style="justify-content: center;">
+          <a href="register.html" class="btn btn-primary btn-lg">
+            <i class="fas fa-user-plus"></i> Daftar Sekarang
+          </a>
+          <a href="login.html" class="btn btn-secondary btn-lg">
+            <i class="fas fa-sign-in-alt"></i> Masuk ke Akun
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <a href="index.html" class="logo">
+            <i class="fas fa-shield-alt"></i>
+            CloudSecureVault
+          </a>
+          <p class="footer-description">
+            Platform penyimpanan file terenkripsi end-to-end dengan standar keamanan tertinggi.
+          </p>
+          <div class="social-links">
+            <a href="#" class="social-link" title="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link" title="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="#" class="social-link" title="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p class="copyright">
+          &copy; 2025 Cloud Secure Vault. Hak cipta dilindungi undang-undang.
+        </p>
+        <p class="text-gray">
+          <i class="fas fa-globe"></i> Bahasa Indonesia
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('mobile-active');
+    });
+    
+    document.addEventListener('click', function(e) {
+      const navLinks = document.querySelector('.nav-links');
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      
+      if (navLinks?.classList.contains('mobile-active') && 
+          !navLinks.contains(e.target) && 
+          !mobileBtn.contains(e.target)) {
+        navLinks.classList.remove('mobile-active');
+      }
+    });
+    
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const navLinks = document.querySelector('.nav-links');
+          if (navLinks?.classList.contains('mobile-active')) {
+            navLinks.classList.remove('mobile-active');
+          }
+          
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    window.addEventListener('scroll', function() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+      
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (scrollY >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
