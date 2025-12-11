@@ -1,100 +1,103 @@
-# 🔐 Cloud Secure Vault
+# Cloud Secure Vault
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Supabase](https://img.shields.io/badge/Supabase-Backend-blue)](https://supabase.com/)
+Platform penyimpanan file terenkripsi end-to-end dengan standar keamanan AES-256.
 
-Cloud Secure Vault adalah aplikasi web untuk menyimpan file **aman di cloud** dengan enkripsi AES. Pengguna dapat mendaftar, login, upload file terenkripsi, dan mengunduh file dengan kunci rahasia pribadi mereka.
+## 📋 Fitur Utama
 
----
+- 🔐 **Enkripsi AES-256** - File dienkripsi di perangkat sebelum diupload
+- 👤 **Autentikasi Aman** - Sistem login/register dengan Supabase
+- 📁 **Manajemen File** - Upload, download, dan hapus file terenkripsi
+- 📱 **Responsive Design** - Tampilan optimal untuk desktop dan mobile
+- 🔑 **Zero-Knowledge** - Hanya Anda yang memiliki kunci enkripsi
 
-## Fitur Utama
+## 🚀 Cara Mulai
 
-- ✅ Registrasi & login dengan **email & password**.
-- ✅ Verifikasi email sebelum upload.
-- ✅ Enkripsi file dengan **AES**.
-- ✅ Penyimpanan file di **Supabase Storage**.
-- ✅ Daftar file yang sudah diupload + tombol download.
-- ✅ Dekripsi file saat download menggunakan **kunci rahasia**.
-- ✅ Responsif untuk desktop & mobile.
+### 1. Setup Supabase
+1. Buat akun di [supabase.com](https://supabase.com)
+2. Buat project baru
+3. Dapatkan URL dan anon key dari Settings > API
+4. Update file `js/utils.js`:
+```javascript
+const SUPABASE_CONFIG = {
+  url: 'URL_ANDA_DISINI',
+  anonKey: 'ANON_KEY_ANDA_DISINI'
+};
+```
 
----
+### 2. Setup Storage
+1. Di Supabase, buka menu Storage
+2. Buat bucket baru dengan nama `secure-files`
+3. Atur policy menjadi public (untuk testing)
 
-## Demo / Screenshot
+### 3. Deploy Website
+Upload semua file ke hosting web atau jalankan dengan live server.
 
-![Screenshot](screenshot.png)  
-*Contoh tampilan aplikasi.*
-
----
-
-## Teknologi
-
-- **Frontend:** HTML, CSS, JavaScript  
-- **Library:** 
-  - [Supabase JS](https://supabase.com/docs/reference/javascript/introduction) — autentikasi & storage  
-  - [CryptoJS](https://cryptojs.gitbook.io/docs/) — AES enkripsi/dekripsi  
-- **Backend:** Supabase (Auth + Storage)  
-- **Hosting:** Netlify / Vercel / localhost  
-
----
-
-## Cara Menjalankan
-
-1. Clone repository:
-   git clone <repository-url>
-   cd cloud-secure-vault
-   
-
-2. Buka `index.html` di browser atau jalankan server lokal:
-
-   npx http-server .
-
-
-3. Buat akun di [Supabase](https://supabase.com/) dan buat project baru.
-
-4. Buat **Storage Bucket** bernama: `secure-files`.
-
-5. Update `app.js` dengan URL & API Key Supabase:
-
-   const supabase = createClient("SUPABASE_URL", "SUPABASE_ANON_KEY");
-
-6. Akses aplikasi dan lakukan:
-
-   * Registrasi akun
-   * Login
-   * Upload file dengan kunci rahasia
-   * Download & masukkan kunci untuk dekripsi
-
----
-
-## Struktur Folder
+## 📁 Struktur File
 
 ```
 cloud-secure-vault/
-├─ index.html        # Halaman utama
-├─ style.css         # Styling
-├─ app.js            # Script frontend
-├─ README.md         # Dokumentasi
-└─ screenshot.png    # Contoh tampilan
+├── index.html          # Halaman utama
+├── login.html          # Login
+├── register.html       # Register
+├── dashboard.html      # Dashboard user
+├── css/
+│   ├── style.css      # Style utama
+│   ├── auth.css       # Style auth pages
+│   └── dashboard.css  # Style dashboard
+└── js/
+    ├── utils.js       # Utility functions
+    ├── auth.js        # Auth logic
+    └── dashboard.js   # Dashboard logic
 ```
 
+## 🛠️ Teknologi
+
+- **HTML5/CSS3** - Struktur dan styling
+- **JavaScript ES6** - Logika aplikasi
+- **Supabase** - Backend dan authentication
+- **Crypto-JS** - Enkripsi AES-256
+- **Font Awesome** - Ikon
+
+## 🔧 Penggunaan
+
+### Upload File
+1. Login ke dashboard
+2. Klik "Pilih File" atau drag & drop
+3. Masukkan kunci enkripsi (minimal 8 karakter)
+4. Klik "Enkripsi & Upload"
+
+### Download File
+1. Pilih file yang ingin didownload
+2. Masukkan kunci enkripsi yang sama saat upload
+3. File akan didekripsi dan didownload
+
+## 📱 Responsive
+
+Website dirancang untuk semua ukuran layar:
+- **Desktop**: Layout dengan sidebar
+- **Tablet/Mobile**: Menu navigasi sederhana
+
+## ⚠️ Penting
+
+- **Simpan kunci enkripsi Anda!** Jika hilang, file tidak dapat dipulihkan
+- Maksimum ukuran file: 100MB
+- File disimpan terenkripsi dengan ekstensi `.enc`
+
+## 📝 Lisensi
+
+MIT License - bebas digunakan dan dimodifikasi.
+
+## 🔧 Troubleshooting
+
+### Login gagal
+- Pastikan email sudah diverifikasi
+- Cek koneksi internet
+
+### Upload gagal
+- Pastikan file < 100MB
+- Kunci enkripsi minimal 8 karakter
+
+### Download gagal
+- Gunakan kunci enkripsi yang sama dengan saat upload
+
 ---
-
-## Cara Kerja
-
-1. **Registrasi & Login:** Email diverifikasi sebelum upload.
-2. **Upload File:** File dienkripsi AES → diubah ke base64 → diupload ke Supabase Storage.
-3. **Download & Dekripsi:** Pengguna memasukkan kunci rahasia → file diunduh & didekripsi di browser.
-
----
-
-## Keamanan
-
-* Kunci enkripsi **tidak disimpan di server**.
-* Supabase menyimpan file dalam **format terenkripsi**.
-* Kehilangan kunci = file **tidak dapat didekripsi**.
-
----
-
-## Lisensi
-
-MIT License © 2025 Harun
