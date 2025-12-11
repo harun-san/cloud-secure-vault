@@ -142,6 +142,211 @@ class DashboardManager {
     });
   }
   
+  handleFileSelect() {
+    const fileInput = document.getElementById('file-input');
+    const keyWarning = document.getElementById('key-warning');
+    
+    if (fileInput.files.length > 0) {
+      keyWarning.style.display = 'block';
+      
+      this.showSelectedFiles(fileInput.files);
+      
+      window.utils.showAlert(`Dipilih ${fileInput.files.length} file`, 'info');
+    }
+  }
+  
+  showSelectedFiles(files) {
+    const keySection = document.querySelector('.key-section');
+    if (!keySection) return;
+    
+    let filesSection = document.getElementById('selected-files-section');
+    
+    if (!filesSection) {
+      const filesHTML = `
+        <div class="selected-files-section" id="selected-files-section">
+          <div class="selected-files-header">
+            <h4><i class="fas fa-file"></i> File yang Dipilih</h4>
+            <button class="btn btn-sm btn-secondary" id="clear-files-btn">
+              <i class="fas fa-times"></i> Hapus Semua
+            </button>
+          </div>
+          <div class="selected-files-list" id="selected-files-list">
+            <!-- File items akan muncul di sini -->
+          </div>
+        </div>
+      `;
+      
+      keySection.insertAdjacentHTML('beforebegin', filesHTML);
+      
+      document.getElementById('clear-files-btn')?.addEventListener('click', () => {
+        this.clearSelectedFiles();
+      });
+      
+      filesSection = document.getElementById('selected-files-section');
+    }
+    
+    const filesList = document.getElementById('selected-files-list');
+    if (!filesList) return;
+    
+    filesList.innerHTML = '';
+    
+    Array.from(files).forEach((file, index) => {
+      const fileSize = window.utils.formatFileSize(file.size);
+      const fileIcon = window.utils.getFileIcon(file.name);
+      const fileType = file.type || 'Unknown';
+      
+      const fileItem = document.createElement('div');
+      fileItem.className = 'selected-file-item';
+      fileItem.innerHTML = `
+        <div class="selected-file-icon">
+          <i class="${fileIcon}"></i>
+        </div>
+        <div class="selected-file-info">
+          <div class="selected-file-name" title="${file.name}">${file.name}</div>
+          <div class="selected-file-meta">
+            <span>${fileSize}</span>
+            <span>•</span>
+            <span>${fileType}</span>
+          </div>
+        </div>
+        <button class="action-btn remove-file-btn" data-index="${index}" title="Hapus file">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      
+      filesList.appendChild(fileItem);
+      
+      const removeBtn = fileItem.querySelector('.remove-file-btn');
+      removeBtn.addEventListener('click', (e) => {
+        const indexToRemove = parseInt(e.currentTarget.dataset.index);
+        this.removeSelectedFile(indexToRemove);
+      });
+    });
+    
+    filesSection.style.display = 'block';
+  }
+  
+  removeSelectedFile(index) {
+    const fileInput = document.getElementById('file-input');
+    
+    if (fileInput && fileInput.files.length > 0) {
+      
+      const filesArray = Array.from(fileInput.files);
+      
+      filesArray.splice(index, 1);
+      
+      const dataTransfer = new DataTransfer();
+      filesArray.forEach(file => {
+        dataTransfer.items.add(file);
+      });
+      
+      fileInput.files = dataTransfer.files;
+      
+      if (filesArray.length > 0) {
+        this.showSelectedFiles(fileInput.files);
+      } else {
+        this.clearSelectedFiles();
+      }
+    }
+  }
+  
+  clearSelectedFiles() {
+    const fileInput = document.getElementById('file-input');
+    
+    if (fileInput) {
+      fileInput.value = '';
+    }
+    
+    const section = document.getElementById('selected-files-section');
+    if (section) {
+      section.style.display = 'none';
+    }
+    
+    const keyWarning = document.getElementById('key-warning');
+    if (keyWarning) {
+      keyWarning.style.display = 'none';
+    }
+    
+    window.utils.showAlert('Semua file telah dihapus dari daftar', 'info');
+  }
+  
+  
+  async uploadFile() {
+    const fileInput = document.getElementById('file-input');
+    const keyInput = document.getElementById('encryption-key');
+    const uploadBtn = document.getElementById('encrypt-upload-btn');
+    
+    if (!fileInput.files.length) {
+      return window.utils.showAlert('Pilih file terlebih dahulu', 'error');
+    }
+    
+    const key = keyInput?.value;
+    if (!key || key.length < 8) {
+      return window.utils.showAlert('Kunci enkripsi minimal 8 karakter', 'error');
+    }
+    
+    try {
+      window.utils.showLoading(uploadBtn, 'Mengenkripsi...');
+      
+      const files = Array.from(fileInput.files);
+      let uploadedCount = 0;
+      let totalFiles = files.length;
+      
+      for (const file of files) {
+        
+        if (file.size > 100 * 1024 * 1024) {
+          window.utils.showAlert(`File "${file.name}" terlalu besar! Maksimum 100MB.`, 'error');
+          continue;
+        }
+        
+        const reader = new FileReader();
+        
+        const fileData = await new Promise((resolve, reject) => {
+          reader.onload = (e) => resolve(e.target.result);
+          reader.onerror = (e) => reject(new Error('Gagal membaca file'));
+          reader.readAsArrayBuffer(file);
+        });
+        
+        const bytes = new Uint8Array(fileData);
+        const wordArray = this.crypto.lib.WordArray.create(bytes);
+        const encrypted = this.crypto.AES.encrypt(wordArray, key).toString();
+        
+        const blob = new Blob([encrypted], { type: 'text/plain' });
+        const timestamp = Date.now();
+        const safeFileName = window.utils.sanitizeFilename(file.name);
+        const filePath = `${this.currentUser.id}/${timestamp}_${safeFileName}.enc`;
+        
+        const { error } = await this.supabase.storage
+          .from('secure-files')
+          .upload(filePath, blob, { upsert: true });
+        
+        if (error) throw error;
+        
+        uploadedCount++;
+      }
+      
+      window.utils.showAlert(`✅ ${uploadedCount} file berhasil dienkripsi dan diupload!`, 'success');
+      
+      fileInput.value = '';
+      keyInput.value = '';
+      document.getElementById('key-warning').style.display = 'none';
+      
+      this.clearSelectedFiles();
+      
+      await this.loadFiles();
+      const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+      this.applyFilter(activeFilter);
+      this.switchSection('files');
+      
+    } catch (error) {
+      console.error('Upload error:', error);
+      window.utils.showAlert('Gagal upload: ' + error.message, 'error');
+    } finally {
+      window.utils.hideLoading(uploadBtn);
+    }
+  }
+  
+  
   showDeleteAccountModal() {
     this.resetDeleteModal();
     document.getElementById('delete-account-modal').classList.add('active');
@@ -588,84 +793,11 @@ class DashboardManager {
     }
   }
   
-  handleFileSelect() {
-    const fileInput = document.getElementById('file-input');
-    const keyWarning = document.getElementById('key-warning');
-    
-    if (fileInput.files.length > 0) {
-      keyWarning.style.display = 'block';
-      window.utils.showAlert('File siap untuk dienkripsi', 'info');
-    }
-  }
-  
   toggleUploadButton(key) {
     const uploadBtn = document.getElementById('encrypt-upload-btn');
     if (uploadBtn) {
       uploadBtn.disabled = !key || key.length < 8;
     }
-  }
-  
-  async uploadFile() {
-    const fileInput = document.getElementById('file-input');
-    const keyInput = document.getElementById('encryption-key');
-    const uploadBtn = document.getElementById('encrypt-upload-btn');
-    
-    if (!fileInput.files.length) {
-      return window.utils.showAlert('Pilih file terlebih dahulu', 'error');
-    }
-    
-    const key = keyInput?.value;
-    if (!key || key.length < 8) {
-      return window.utils.showAlert('Kunci enkripsi minimal 8 karakter', 'error');
-    }
-    
-    const file = fileInput.files[0];
-    
-    if (file.size > 100 * 1024 * 1024) {
-      return window.utils.showAlert('File terlalu besar! Maksimum 100MB.', 'error');
-    }
-    
-    const reader = new FileReader();
-    
-    reader.onload = async (e) => {
-      try {
-        window.utils.showLoading(uploadBtn, 'Mengenkripsi...');
-        
-        const bytes = new Uint8Array(e.target.result);
-        const wordArray = this.crypto.lib.WordArray.create(bytes);
-        const encrypted = this.crypto.AES.encrypt(wordArray, key).toString();
-        
-        const blob = new Blob([encrypted], { type: 'text/plain' });
-        const timestamp = Date.now();
-        const safeFileName = window.utils.sanitizeFilename(file.name);
-        const filePath = `${this.currentUser.id}/${timestamp}_${safeFileName}.enc`;
-        
-        const { error } = await this.supabase.storage
-          .from('secure-files')
-          .upload(filePath, blob, { upsert: true });
-        
-        if (error) throw error;
-        
-        window.utils.showAlert('✅ File berhasil dienkripsi dan diupload!', 'success');
-        
-        fileInput.value = '';
-        keyInput.value = '';
-        document.getElementById('key-warning').style.display = 'none';
-        
-        await this.loadFiles();
-        const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
-        this.applyFilter(activeFilter);
-        this.switchSection('files');
-        
-      } catch (error) {
-        console.error('Upload error:', error);
-        window.utils.showAlert('Gagal upload: ' + error.message, 'error');
-      } finally {
-        window.utils.hideLoading(uploadBtn);
-      }
-    };
-    
-    reader.readAsArrayBuffer(file);
   }
   
   async downloadFile(fileName) {
